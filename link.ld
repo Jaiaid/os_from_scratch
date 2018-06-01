@@ -1,0 +1,58 @@
+INPUT
+(
+	kernel/kernel_entry.o
+	kernel/kernel.o
+	interrupt/idt.o
+	displaydriver/displaydriver_entry.o
+	displaydriver/displaydriver.o
+	pci/pci.o
+	scheduler/timer_entry.o
+	memory/memory.o
+	memory/memory_asm.o
+)
+
+OUTPUT_FORMAT("binary")
+
+OUTPUT(kernel.bin)
+
+SECTIONS
+{
+    . = 0x8000;
+
+	.kernel  : {
+		kernel/kernel_entry.o( .text )
+        kernel/misc.o( .text )
+		kernel/kernel.o( .text )
+	    memory/memory.o( .text )
+		memory/memory_asm.o( .text )
+        interrupt/idt.o( .text )
+        pci/pci.o( .text )
+        scheduler/timer_entry.o( .text )
+        displaydriver/displaydriver_entry.o( .text )	
+		displaydriver/displaydriver.o( .text )
+	}
+
+    . = 0xa000;
+
+    .memorydata  :  {
+		memory/memory.o( .data )
+		interrupt/idt.o( .data )
+		interrupt/idt.o( .rodata )
+	}
+
+	. = 0xb000;
+
+	.kerneldata  : {
+		kernel/kernel.o( .data )
+		kernel/kernel.o( .rodata )
+	}
+
+	. = 0xc000;
+
+	.displaydata  :  {
+        displaydriver/displaydriver_entry.o( .data )
+		displaydriver/displaydriver_entry.o( .rodata )
+		displaydriver/displaydriver.o( .data )
+		displaydriver/displaydriver.o( .rodata )
+	}
+}
