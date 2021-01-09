@@ -3,8 +3,8 @@ INPUT
 	kernel/kernel_entry.o
 	kernel/kernel.o
 	interrupt/idt.o
-	displaydriver/displaydriver_entry.o
-	displaydriver/displaydriver.o
+	kernel/devmgr_entry.o
+	kernel/devmgr.o
 	pci/pci.o
 	scheduler/timer_entry.o
 	memory/memory.o
@@ -26,10 +26,11 @@ SECTIONS
 	    memory/memory.o( .text )
 		memory/memory_asm.o( .text )
         interrupt/idt.o( .text )
+        kernel/devmgr_entry.o( .text )	
+		kernel/devmgr.o( .text )
         pci/pci.o( .text )
         scheduler/timer_entry.o( .text )
-        displaydriver/displaydriver_entry.o( .text )	
-		displaydriver/displaydriver.o( .text )
+        displaydriver/displaydriver.o( .text )
 	}
 
     . = 0xa000;
@@ -45,14 +46,6 @@ SECTIONS
 	.kerneldata  : {
 		kernel/kernel.o( .data )
 		kernel/kernel.o( .rodata )
-	}
-
-	. = 0xc000;
-
-	.displaydata  :  {
-        displaydriver/displaydriver_entry.o( .data )
-		displaydriver/displaydriver_entry.o( .rodata )
-		displaydriver/displaydriver.o( .data )
-		displaydriver/displaydriver.o( .rodata )
+        kernel/devmgr.o( .data )        
 	}
 }

@@ -28,7 +28,7 @@ bootloader.bin  :  $(BOOT)/bootloader.s
 		$(FASM) $(BOOT)/bootloader.s
 		mv $(BOOT)/bootloader.bin bootloader.bin
 # 
-kernel.bin  :  $(KERNEL)/kernel_entry.o  $(KERNEL)/kernel.o  $(INT)/idt.o  $(DD)/displaydriver_entry.o  $(DD)/displaydriver.o  $(PCI)/pci.o   $(SCH)/timer_entry.o   $(MEM)/memory.o   $(MEM)/memory_asm.o   $(KERNEL)/misc.o    $(LINK)
+kernel.bin  :  $(KERNEL)/kernel_entry.o  $(KERNEL)/kernel.o  $(INT)/idt.o  $(KERNEL)/devmgr_entry.o  $(KERNEL)/devmgr.o  $(DD)/displaydriver_entry.o  $(DD)/displaydriver.o  $(PCI)/pci.o   $(SCH)/timer_entry.o   $(MEM)/memory.o   $(MEM)/memory_asm.o   $(KERNEL)/misc.o    $(LINK)
 		$(LNK) $(LNK_FLAG) -T link.ld
 #
 $(KERNEL)/kernel.o  :  $(KERNEL)/kernel.c  $(LIB)/IO.h  $(MACRO)
@@ -48,6 +48,12 @@ $(DD)/displaydriver.o  :  $(DD)/displaydriver.c   $(MACRO)  $(PORT)/port_IO.h  $
 #
 $(DD)/displaydriver_entry.o  :  $(DD)/displaydriver_entry.s
 		$(FASM) $(DD)/displaydriver_entry.s
+#
+$(KERNEL)/devmgr.o  :  $(KERNEL)/devmgr.c   $(MACRO)
+		$(CC) $(CC_FLAG) -c $(KERNEL)/devmgr.c -o $(KERNEL)/devmgr.o
+#
+$(KERNEL)/devmgr_entry.o  :  $(KERNEL)/devmgr_entry.s
+		$(FASM) $(KERNEL)/devmgr_entry.s
 #
 #$(PORT)/port_IO.o  :  $(PORT)/port_IO.s
 #		$(FASM) $(PORT)/port_IO.s

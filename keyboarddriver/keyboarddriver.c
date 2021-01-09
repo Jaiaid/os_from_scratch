@@ -1,12 +1,9 @@
-#include<stdint.h>
-#include"../portIO/port_IO.h"
+#include <stdint.h>
+#include "../portIO/port_IO.h"
+#include "keyboarddriver.h"
 
-#define KEYBOARD_STATUS_PORT 0x64
-#define KEYBOARD_DATA_PORT 0x60
 
-extern char _SCS1_TO_ASCII_MAP[256];
-
-uint32_t _KEYBOARDDRIVER_ENTRY1_READCHAR(void)
+uint32_t _KEYBOARDDRIVER_READCHAR(void)
 {
 	uint32_t scanCode,val,dummy;
 	

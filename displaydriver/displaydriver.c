@@ -13,22 +13,19 @@
 #define LOW_BYTE_SELECTOR  0x0f
 
 
-
-
 uint16_t *video_memory = (uint16_t *)(VIDEO_MEMORY_OFFSET-CODE_SEG_PHY_ADRS);
 uint32_t abspos = 1;
 uint32_t xpos = 1;
 
 
-void _DISPLAYDRIVER_init(void)
+int _DISPLAYDRIVER_init(void)
 {
 	unsigned int l;
-	
 	abspos=0;
 	xpos=0;
 	for(l=0;l<2000;l++) video_memory[l] = (SCREEN_COLOR<<8) + 0;
-	
-	return;
+
+	return 0;
 }
 
 
@@ -43,9 +40,9 @@ void cursorUpdate()
 }
 
 
-uint32_t _DISPLAYDRIVER_ENTRY1_printChar(unsigned char character)
+int _DISPLAYDRIVER_ENTRY1_printChar(uint32_t character)
 {
-	video_memory[abspos] = (SCREEN_COLOR<<8) + character; 
+	video_memory[abspos] = (SCREEN_COLOR<<8) + (char)character; 
 	abspos++;
 	xpos++;
 	
@@ -59,7 +56,7 @@ uint32_t _DISPLAYDRIVER_ENTRY1_printChar(unsigned char character)
 }
 
 
-uint32_t _DISPLAYDRIVER_ENTRY2_nextLine(void)
+int _DISPLAYDRIVER_ENTRY2_nextLine(void)
 {
 	abspos+=MAX_CHAR_IN_ROW;
 	cursorUpdate();
@@ -68,7 +65,7 @@ uint32_t _DISPLAYDRIVER_ENTRY2_nextLine(void)
 }
 
 
-uint32_t _DISPLAYDRIVER_ENTRY3_lineFirst(void)
+int _DISPLAYDRIVER_ENTRY3_lineFirst(void)
 {
 	abspos-=xpos;
 	xpos=0;

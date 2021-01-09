@@ -35,17 +35,9 @@ void puts(char *str)
 	
 	for(l=0;str[l];l++)
 	{
-		if(str[l]!='\n'){
-			__asm__("movl %0,%%edx"::"m"(str[l]));
-			__asm__("movl $0,%eax");
-			__asm__("int $0x80");
-		}
-		else{
-			__asm__("movl $1,%eax");
-			__asm__("int $0x80");
-			__asm__("movl $2,%eax");
-			__asm__("int $0x80");
-		}
+		__asm__("movl %0,%%edx"::"m"(str[l]));
+		__asm__("movl $0x00000002,%eax");
+		__asm__("int $0x80");
 	}
 	
 	return;
