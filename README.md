@@ -1,4 +1,4 @@
-# Experimental coding of OS from scratch
+# Experimental coding to build OS from scratch
 
 These codes are written following different tutorial on devloping OS from scratch for an intel x86 based IBM PC architecture. By IBM PC architecture, it is meant that what chips are present in the system (e.g. timer, PIC, keyboard chip), I/O port addresses (e.g.  timer, PIC, PCI controller, keyboard controller) are assumed according to this architecture. For processor intel80386 is assumed.
 
