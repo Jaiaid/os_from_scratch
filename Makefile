@@ -1,6 +1,6 @@
-CC="/home/laptop/Documents/programming/OS/crosscompiler/bin/i686-elf-gcc"
-LNK="/home/laptop/Documents/programming/OS/crosscompiler/bin/i686-elf-ld"
-FASM="/home/laptop/application/fasm/fasm"
+CC="gcc"
+LNK="ld"
+FASM="fasm"
 
 CC_FLAG=-ffreestanding -m32 -fno-pie
 LNK_FLAG=-melf_i386
