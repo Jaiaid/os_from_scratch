@@ -29,6 +29,8 @@ void init_MEM(pagedir_entry *dir)
 	table[7].content=(uint32_t *)0x00007001;
     table[8].content=(uint32_t *)0x00008001;
     table[9].content=(uint32_t *)0x00009001;
+    //table[0xa].content=(uint32_t *)0x0000a001;
+    
 	for(virtual_page_no=0xa,ptr=0xa000;virtual_page_no<20;virtual_page_no++,ptr+=0x1000)
 	{
 	    table[virtual_page_no].content=(uint32_t *)(ptr|0x00000003);
@@ -36,6 +38,8 @@ void init_MEM(pagedir_entry *dir)
 	table[0xb8].content=(uint32_t *)(0xb8003);
 	table[0xb9].content=(uint32_t *)(0xb9003);
     table[0x7f].content=(uint32_t *)(0x7f003);
+    table[0x7e].content=(uint32_t *)(0x7e003);
+    //table[0x7d].content=(uint32_t *)(0x7d003);
 
 	_MEM_enable_paging();
 }
