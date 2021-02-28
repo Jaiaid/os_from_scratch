@@ -12,7 +12,7 @@ struct devDescriptor
 	int (*close)();
 };
 
-int attach(struct devDescriptor *device);
-int close(int device_no);
+int attach_device(struct devDescriptor *device);
+int close_device(int device_no);
 
 #endif
