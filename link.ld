@@ -28,9 +28,9 @@ SECTIONS
         interrupt/idt.o( .text )
         kernel/devmgr_entry.o( .text )	
 		kernel/devmgr.o( .text )
-        pci/pci.o( .text )
         scheduler/timer_entry.o( .text )
         displaydriver/displaydriver.o( .text )
+        pci/pci.o( .text )
 	}
 
     . = 0xa000;
