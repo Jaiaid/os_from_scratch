@@ -10,6 +10,7 @@ extern int numDevice;
 void init_DEVMGR()
 {
 	device_list=(struct devDescriptor *)_MEM_findalloc_page();
+	numDevice = 0;
 }
 
 int _DEVMGR_serve(int parameter, int arg)
@@ -21,7 +22,7 @@ int _DEVMGR_serve(int parameter, int arg)
 	switch(service_no)
 	{
 		case 0:
-			ret=attach((struct devDescriptor *)arg);
+			ret=attach_device((struct devDescriptor *)arg);
 			break;
 		case 1:
 			ret=device_list[device_no].read((uint32_t *)arg);
@@ -30,7 +31,7 @@ int _DEVMGR_serve(int parameter, int arg)
 			ret=device_list[device_no].write((uint32_t)arg);
 			break;
 		case 3:
-			ret=close(device_no);
+			ret=close_device(device_no);
 			break;
 		default:
 			ret=-1;
@@ -39,7 +40,7 @@ int _DEVMGR_serve(int parameter, int arg)
 	return ret;
 }
 
-int attach(struct devDescriptor *device)
+int attach_device(struct devDescriptor *device)
 {
 	device_list[numDevice]=*device;
 	device_list[numDevice].init();
@@ -48,7 +49,7 @@ int attach(struct devDescriptor *device)
 	return numDevice-1;
 }
 
-int close(int device_no)
+int close_device(int device_no)
 {
 	device_list[device_no].close();
 	numDevice--;
