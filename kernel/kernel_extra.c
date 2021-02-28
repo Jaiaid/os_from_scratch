@@ -75,8 +75,8 @@ uint32_t pciDevDiscover(uint32_t initBus, uint32_t count, struct pciDevDescripto
 					count = pciDevDiscover(downstreamBus, count+1, pciDevList);
 				}
 
-				//printf("PCI device : bus = %x, slot = %x, devfn = %x\n",initBus, slot, funcNo);
-				//printf("device id = %x, class = %x, vendor = %x, header = %x\n", devid, class, vendor, header);
+				printf("PCI device : bus = %x, slot = %x, devfn = %x\n",initBus, slot, funcNo);
+				printf("device id = %x, class = %x, vendor = %x, header = %x\n", devid, class, vendor, header);
 
 				for(BARNo = 0;BARNo < 6;BARNo++)
 				{
@@ -89,7 +89,7 @@ uint32_t pciDevDiscover(uint32_t initBus, uint32_t count, struct pciDevDescripto
 
 					neededMem = (~neededMem) + 1;
 
-					//printf("BAR%d address = %x, size = %x\n", BARNo, address, neededMem);
+					printf("BAR%d address = %x, size = %x\n", BARNo, address, neededMem);
 					pciDevList[count].BAR[BARNo] = address;
 					pciDevList[count].space[BARNo] = neededMem;
 
