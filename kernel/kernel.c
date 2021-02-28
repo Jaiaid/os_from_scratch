@@ -37,38 +37,57 @@ int numDevice = 0;
 
 void main()
 {
-	int l;
 	struct devDescriptor device;
 	void *ptr = (void *)&device;
 	/*checking if A20 line is enabled 
 	 *if not then enabled
 	 */
 	if(!a20Enabled()) {
+		// A20 disabled, enabling now
         _ENABLE_A20();
         while(!a20Enabled());
 	}
 
+	// initializing memory paging system
+	// initializing paging, setting up kernel page table;
 	init_MEM((pagedir_entry *)0xf000);
-	init_DEVMGR();
+
+	// initilzing some known device like programmable interrupt controller
+	// programmable interval timer
+	// initializing 8259 PIC
 	init_PIC();
+	// initializing 8253/8254 programmable timer
 	init_TIMER();
+	// setting up interrupt table
+	// setting up interrupt descriptor table
 	init_IDT();
+
+	// initializing device manager, allocating memory
+	// this is only a list of i/o device and their init,read,write method kept by kernel
+	// used as entry point for any device related service
+	// see devmgr.c, devmgr.h
+	init_DEVMGR();
 	
+	// setting up some interrupt services 
+	// adding trap interrupt gate for accessing device manager service
+	add_TRP_Gate(_DEVMGR_ENTRY, 0x80);
+	// adding interrupt gate for scheduled preemption
+	add_INT_Gate(_TIMER_ENTRY, 0x40);
+	// adding interrupt gate for double fault exception\n
+	add_INT_Gate(double_fault, 0x8);
+
+	// setting up display output as device no. 0
+	// no read method only init and write
 	device.init=_DISPLAYDRIVER_init;
 	device.write=_DISPLAYDRIVER_ENTRY1_printChar;
 	device.read = 0;
 	device.close = 0;
-	
-	add_TRP_Gate(_DEVMGR_ENTRY, 0x80);
-	add_INT_Gate(_TIMER_ENTRY, 0x40);
-	add_INT_Gate(double_fault, 0x8);
 
+	// attaching the device by invoking interrupt service 
 	__asm__("movl %0,%%edx"::"m"(ptr));
 	__asm__("movl $0,%eax");
 	__asm__("int $0x80");
 	asm("sti");
-	
-	puts("Hellodsadasdasdasdasdsadsaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddd	");
 	
 	return;
 }
@@ -76,6 +95,7 @@ void main()
 void double_fault()
 {
 	puts("segmentation fault");
+	__asm__("movl $0x45645,%eax");
 	asm("hlt");
 }
 
